@@ -113,3 +113,4 @@ contrib/devtools/split-debug.sh
 db4/
 /db4/include/db.h
 /db4/include/db_cxx.h
+/bitcoin/bitcoin.xcodeproj/project.xcworkspace/xcuserdata/CgPanda.xcuserdatad/UserInterfaceState.xcuserstate
