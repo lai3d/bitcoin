@@ -17,12 +17,10 @@ from collections import defaultdict
 from test_framework.blocktools import (create_block, create_coinbase)
 from test_framework.mininode import (
     CInv,
-    NetworkThread,
     P2PInterface,
     mininode_lock,
     msg_block,
     msg_getdata,
-    NODE_NETWORK,
 )
 from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
@@ -38,7 +36,7 @@ class BaseNode(P2PInterface):
     def __init__(self):
         """Initialize the P2PInterface
 
-        Used to inialize custom properties for the Node that aren't
+        Used to initialize custom properties for the Node that aren't
         included by default in the base class. Be aware that the P2PInterface
         base class already stores a counter for each P2P message type and the
         last received message of each type, which should be sufficient for the
@@ -132,12 +130,9 @@ class ExampleTest(BitcoinTestFramework):
     def run_test(self):
         """Main test logic"""
 
-        # Create a P2P connection to one of the nodes
+        # Create P2P connections to two of the nodes
         self.nodes[0].add_p2p_connection(BaseNode())
 
-        # Start up network handling in another thread. This needs to be called
-        # after the P2P connections have been created.
-        NetworkThread().start()
         # wait_for_verack ensures that the P2P connection is fully up.
         self.nodes[0].p2p.wait_for_verack()
 
@@ -189,6 +184,8 @@ class ExampleTest(BitcoinTestFramework):
         connect_nodes(self.nodes[1], 2)
 
         self.log.info("Add P2P connection to node2")
+        self.nodes[0].disconnect_p2ps()
+
         self.nodes[2].add_p2p_connection(BaseNode())
         self.nodes[2].p2p.wait_for_verack()
 
